@@ -5,7 +5,7 @@
 - [ ] Create
     - [ ] Being able to create new user account
     - [ ] The user being able to login to their account
-    - [ ] The user would be logged out after sometimes
+    - [ ] The user would be logged out after a certain period of time
     - [ ] The user should be able to logout
 
 - [ ] Read
