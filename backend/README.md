@@ -16,7 +16,6 @@
             - [ ] Admin should be able to logout
         - [ ] Products
             - [ ] Be able to create new products
-            - [ ] 
 
 - [ ] Read
     - [ ] Get a list of all products with:
@@ -24,6 +23,11 @@
         - [ ] All corresponding number of items in stock
     - [ ] Get one product
         - [ ] With the corresponding price, description of the product and number of items in stock
+    - [ ] Get a list of all users accounts (only admin)
+        - [ ] with Username, First Name, Last Name and Telephone Number
+    - [ ] Get individual user account (admin only)
+        - [ ] with Username, First Name, Last Name and Telephone Number
+
 
 
 - [ ] Update
@@ -34,18 +38,21 @@
 ### APIs
 
 Users endpoints:
-- `/api/v1/user/create_account`
-- `/api/v1/user/login`
-- `/api/v1/user/logout`
+- `POST /api/v1/user/create_account` 
+- `POST /api/v1/user/login`
+- `POST /api/v1/user/logout`
 
 Admin endpoints:
-- `/api/v1/admin/create_account`
-- `/api/v1/admin/login`
-- `/api/v1/admin/logout`
-- `/api/v1/admin/new_product`
+- `POST /api/v1/admin/create_account`
+- `POST /api/v1/admin/login`
+- `POST /api/v1/admin/logout`
+- `POST /api/v1/admin/new_product` - create product
+- `GET /api/v1/users` - list all users
+- `GET /api/v1/users/:id` - list one user
 
 Other endpoints:
-- `/api/v1/products`
+- `GET /api/v1/products` - List all product
+- `GET /api/v1/products/:id` - List one product
 
 
 ## Tech
