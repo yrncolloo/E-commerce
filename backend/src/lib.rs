@@ -1,12 +1,15 @@
 pub mod utils;
+mod routes;
 
-use axum::{http::StatusCode, routing::get, Router};
+use axum::http::StatusCode;
+use routes::create_route;
 use utils::{app_error::AppError, app_state::AppState};
 
 pub async fn launch(app_state: AppState)-> Result<(), AppError>{
-    let app:Router = Router::new().route("/test", get(||async { "Hello world new"}));
+    let apps_state = app_state.clone();
+    let app = create_route(app_state);
 
-    let address = format!("{}:{}", app_state.address, app_state.port);
+   let address = format!("{}:{}", apps_state.base_url.base_url, apps_state.base_url.port);
     let listenter = tokio::net::TcpListener::bind(&address)
         .await
         .map_err(|error|{
@@ -22,3 +25,4 @@ pub async fn launch(app_state: AppState)-> Result<(), AppError>{
         })
 
 }
+

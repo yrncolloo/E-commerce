@@ -1,9 +1,15 @@
 use axum::extract::FromRef;
+use sea_orm::DatabaseConnection;
 
 
-//#[derive(FromRef)]
+#[derive(Clone, FromRef)]
 pub struct AppState{
-    pub database: String,
-    pub address: String,
-    pub port: String,
+    pub database: DatabaseConnection,
+    pub base_url: Wrapper,
+}
+
+#[derive(Clone)]
+pub struct Wrapper{
+    pub base_url: String,
+    pub port: String
 }
