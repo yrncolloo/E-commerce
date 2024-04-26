@@ -12,7 +12,7 @@ pub struct Model {
     pub email: String,
     pub telephone: String,
     #[sea_orm(unique)]
-    pub default_address_id: i32,
+    pub default_address_id: Option<i32>,
     #[sea_orm(unique)]
     pub salt: String,
     pub password_hash: String,
@@ -28,8 +28,6 @@ pub enum Relation {
         on_delete = "NoAction"
     )]
     Address,
-    #[sea_orm(has_many = "super::customer_and_address::Entity")]
-    CustomerAndAddress,
     #[sea_orm(has_many = "super::product_review::Entity")]
     ProductReview,
     #[sea_orm(has_many = "super::sale::Entity")]
@@ -39,12 +37,6 @@ pub enum Relation {
 impl Related<super::address::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Address.def()
-    }
-}
-
-impl Related<super::customer_and_address::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::CustomerAndAddress.def()
     }
 }
 

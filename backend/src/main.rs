@@ -19,7 +19,7 @@ async fn main() -> Result<(), AppError> {
         })?;
     let app_state = AppState{
         database,
-        base_url: Wrapper { base_url, port },
+        base_url: Wrapper { base_url, port }
 
     };
     launch(app_state).await?;
