@@ -9,6 +9,7 @@ use crate::database::customer as User;
 
 #[derive(Serialize, Deserialize)]
 pub struct RequestUser{
+    username: String,
     first_name: String,
     last_name: String,
     email: String,
@@ -22,9 +23,9 @@ pub struct RequestUser{
 #[derive(Serialize, Deserialize)]
 pub struct RespondUser{
     user_id: i32,
-    first_name: String,
-    last_name: String,
+    username: String,
     telephone: String,
+    email: String
 }
 
 pub async fn register(
@@ -33,6 +34,7 @@ pub async fn register(
     ) -> Result<Json<RespondUser>, AppError>{
 
     let new_user = User::ActiveModel{
+        username: Set(request_user.username),
         first_name: Set(request_user.first_name),
         last_name: Set(request_user.last_name),
         email: Set(request_user.email),
@@ -57,7 +59,7 @@ pub async fn register(
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Something went wrong")
         })?;
 
-    Ok(Json(RespondUser { user_id: user.id , first_name: user.first_name, last_name: user.last_name, telephone: user.telephone }))
+    Ok(Json(RespondUser { user_id: user.id, username: user.username, telephone: user.telephone, email: user.email }))
     
 }
 
