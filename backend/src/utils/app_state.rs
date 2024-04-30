@@ -6,10 +6,14 @@ use sea_orm::DatabaseConnection;
 pub struct AppState{
     pub database: DatabaseConnection,
     pub base_url: Wrapper,
+    pub jwt_secret: TokenWrapper
 }
 
 #[derive(Clone)]
 pub struct Wrapper{
-    pub base_url: String,
+    pub url: String,
     pub port: String
 }
+
+#[derive(Clone)]
+pub struct TokenWrapper(pub String);

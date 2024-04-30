@@ -7,6 +7,8 @@ use serde::{Deserialize, Serialize};
 use crate::utils::app_error::AppError;
 use crate::database::customer as User;
 
+use super::RespondUser;
+
 #[derive(Serialize, Deserialize)]
 pub struct RequestUser{
     username: String,
@@ -20,13 +22,6 @@ pub struct RequestUser{
     password_hash: String,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct RespondUser{
-    user_id: i32,
-    username: String,
-    telephone: String,
-    email: String
-}
 
 pub async fn register(
     State(database): State<DatabaseConnection>,
@@ -59,7 +54,7 @@ pub async fn register(
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Something went wrong")
         })?;
 
-    Ok(Json(RespondUser { user_id: user.id, username: user.username, telephone: user.telephone, email: user.email }))
+    Ok(Json(RespondUser { user_id: user.id, username: user.username, telephone: user.telephone, email: user.email, token: user.token }))
     
 }
 
