@@ -4,7 +4,7 @@
 
 - [ ] Create
     - [ ] User account
-        - [ ] Being able to create new user account
+        - [x] Being able to create new user account
         - [ ] The user being able to login to their account
         - [ ] The user would be logged out after a certain period of time
         - [ ] The user should be able to logout
@@ -57,8 +57,20 @@ Other endpoints:
 
 ## Tech
 
--  Axum
+-  Axum 0.7.5
+    - Features:
+        - macros
 
+- Tokio v1.37.0
+    - Features:
+        - macros
+        - rt-multi-thread
+        - net
+- dotenvy v0.15.7
+- dotenvy_macro v0.15.7
+- serde v1.0.198
+    - Features:
+        - derive
 ## Setup
 
 
