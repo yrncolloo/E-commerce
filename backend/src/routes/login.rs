@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use crate::utils::app_error::AppError;
 use crate::database::customer::{self, Entity as User};
 use crate::utils::app_state::TokenWrapper;
+use crate::utils::hash::verifiy_pass;
 use crate::utils::jwt::create_jwt;
 
 use super::RespondUser;
@@ -31,6 +32,9 @@ pub async fn login(
         })?;
     if let Some(user) = user{
         // verify password
+        if !verifiy_pass(requet_user.password, &user.password_hash)?{
+            return Err(AppError::new(StatusCode::UNAUTHORIZED, "Bad username OR password"));
+        }
 
         // generate jwt
         let token = create_jwt(&jwt_secret.0)?;
@@ -51,6 +55,6 @@ pub async fn login(
         Ok(Json(RespondUser{email: user.email, telephone: user.telephone, user_id: user.id, username:user.username, token: user.token}))
 
     }else {
-        return Err(AppError::new(StatusCode::NOT_FOUND, "Bad username/password"));
+        return Err(AppError::new(StatusCode::NOT_FOUND, "Bad username OR password"));
     }
 }

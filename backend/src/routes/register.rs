@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::utils::app_error::AppError;
 use crate::database::customer as User;
+use crate::utils::hash::create_hash;
 
 use super::RespondUser;
 
@@ -35,7 +36,7 @@ pub async fn register(
         email: Set(request_user.email),
         telephone: Set(request_user.telephone),
         default_address_id: Set(request_user.default_address_id),
-        password_hash: Set(request_user.password_hash),
+        password_hash: Set(create_hash(request_user.password)?),
         salt: Set(request_user.salt),
         ..Default::default()
     }.save(&database)
