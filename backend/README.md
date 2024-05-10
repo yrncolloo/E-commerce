@@ -3,11 +3,11 @@
 ## Features
 
 - [ ] Create
-    - [ ] User account
+    - [x] User account
         - [x] Being able to create new user account
-        - [ ] The user being able to login to their account
-        - [ ] The user would be logged out after a certain period of time
-        - [ ] The user should be able to logout
+        - [x] The user being able to login to their account
+        - [x] The user would be logged out after a certain period of time
+        - [x] The user should be able to logout
     - [ ] Admin account
         - [ ] Account Setup
             - [ ] Create new admin account
