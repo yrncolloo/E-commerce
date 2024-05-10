@@ -18,11 +18,11 @@
             - [ ] Be able to create new products
 
 - [ ] Read
-    - [ ] Get a list of all products with:
-        - [ ] All corresponding price
-        - [ ] All corresponding number of items in stock
-    - [ ] Get one product
-        - [ ] With the corresponding price, description of the product and number of items in stock
+    - [x] Get a list of all products with:
+        - [x] All corresponding price
+        - [x] All corresponding number of items in stock
+    - [x] Get one product
+        - [x] With the corresponding price, description of the product and number of items in stock
     - [ ] Get a list of all users accounts (only admin)
         - [ ] with Username, First Name, Last Name and Telephone Number
     - [ ] Get individual user account (admin only)
