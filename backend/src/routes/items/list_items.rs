@@ -26,7 +26,12 @@ pub async fn list_one_item(
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "There was something that went wrong")
         })?;
     if let Some(item) = item{
-        return Ok(Json(Items { name: item.name, description: item.description, image_id: item.image_id, price: item.price, stock: item.stock }));
+        return Ok(Json(Items {
+            name: item.name, 
+            description: item.description, 
+            image_id: item.image_id, 
+            price: item.price, 
+            stock: item.stock }));
     }else {
         
         Err(AppError::new(StatusCode::NOT_FOUND, "product not found"))

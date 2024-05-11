@@ -4,3 +4,13 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+axum = { version = "0.7.5", features = ["macros"] }
+axum-extra = { version = "0.9.3", features = ["typed-header"] }
+bcrypt = "0.15.1"
+chrono = { version = "0.4.38", features = ["serde"] }
+dotenvy = "0.15.7"
+dotenvy_macro = "0.15.7"
+jsonwebtoken = "9.3.0"
+sea-orm = { version = "0.12.15", features = ["sqlx-postgres", "runtime-tokio-rustls"] }
+serde = { version = "1.0.198", features = ["derive"] }
+tokio = { version = "1.37.0", features = ["macros", "rt-multi-thread", "net"] }

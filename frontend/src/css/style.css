@@ -1,0 +1,18 @@
+body{
+	background-color: #F6D8B9;
+	margin: 0;
+	padding: 0;
+}
+.navbar{
+	background-color: red;
+	padding: 0.5%;
+	border: 1px solid black;
+	text-align: center;
+	
+}
+.navbar-list{
+	list-style-type: none;
+	display: inline-flex;
+	padding: 1em;
+	border: 1px solid black;
+}

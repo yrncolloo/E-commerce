@@ -10,13 +10,13 @@ use self::{items::list_items::{list_all_items, list_one_item}, login::login, log
 
 pub fn create_route(app_state: AppState) -> Router{
     Router::new()
-        .route("/logout", post(logout))
-        .route("/list/:id", get(list_one_item))
-        .route("/list", get(list_all_items))
-        .route("/test", get(test))
+        .route("/api/v1/logout", post(logout))
+        .route("/api/v1/list/:id", get(list_one_item))
+        .route("/api/v1/list", get(list_all_items))
+        .route("/api/v1/test", get(test))
         .route_layer(middleware::from_fn_with_state(app_state.clone(), guard_routes))
-        .route("/register", post(register))
-        .route("/login", post(login))
+        .route("/api/v1/register", post(register))
+        .route("/api/v1/login", post(login))
         .with_state(app_state)
 
 }
