@@ -1,8 +1,8 @@
 use axum::http::StatusCode;
 use axum::{extract::State, Json};
-use chrono::{NaiveDate, NaiveDateTime, Utc};
+use chrono::{NaiveDateTime, Utc};
 use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set, TryIntoModel};
-use sea_orm::{prelude::ChronoDateTimeUtc, DatabaseConnection};
+use sea_orm::DatabaseConnection;
 use serde::{Deserialize, Serialize};
 
 use crate::utils::app_error::AppError;
