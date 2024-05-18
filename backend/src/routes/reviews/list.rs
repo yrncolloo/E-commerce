@@ -29,7 +29,7 @@ pub async fn list_reviews(
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Review not found")
         })?;
     if let Some(review) = review{
-        return Ok(Json(PostReviews { review_id: review.id, product_id: review.product_id, customer_id: review.customer_id, rating: review.rating, review_message: review.review_text.unwrap(), review_date: review.review_date.unwrap() }));
+        return Ok(Json(PostReviews { review_id: review.id, product_id: review.product_id, customer_id: review.customer_id, rating: review.rating, review_message: review.review_text, review_date: review.review_date }));
     }else {
       Err(AppError::new(StatusCode::NOT_FOUND, "Review not found"))  
     }
@@ -54,8 +54,8 @@ pub async fn list_all_reviews(
             product_id: rev.product_id,
             customer_id: rev.customer_id,
             rating: rev.rating,
-            review_message: rev.review_text.clone().unwrap(),
-            review_date: rev.review_date.unwrap()
+            review_message: rev.clone().review_text,
+            review_date: rev.review_date
         }).collect();
 
    Ok(Json(post)) 

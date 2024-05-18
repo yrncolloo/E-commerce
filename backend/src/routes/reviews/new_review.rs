@@ -13,7 +13,7 @@ use crate::database::product::Entity as Product;
 #[derive(Serialize, Deserialize)]
 pub struct GetReview{
     username: String,
-    message: Option<String>,
+    message: String,
     rating: i32,
     product_id: i32
 
@@ -62,7 +62,7 @@ pub async fn create_review(
         product_id: if let Some(product) = product{
             Set(product.id)
         }else {return Err(AppError::new(StatusCode::NOT_FOUND, "product not found"));},
-        review_date: Set(Some(rev_date)),
+        review_date: Set(rev_date),
         ..Default::default()
     }.save(&database)
     .await
@@ -77,5 +77,12 @@ pub async fn create_review(
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Something went wrong")
         })?;
 
-    Ok(Json(RespondReview { review_id: final_product.id, customer_id: final_product.customer_id, product_id: final_product.product_id, rating: final_product.rating, rev_message: final_product.review_text.unwrap(), review_date: final_product.review_date.unwrap() }))
+    Ok(Json(RespondReview { 
+        review_id: final_product.id, 
+        customer_id: final_product.customer_id, 
+        product_id: final_product.product_id, 
+        rating: final_product.rating, 
+        rev_message: final_product.review_text,
+        review_date: final_product.review_date
+    }))
 }
