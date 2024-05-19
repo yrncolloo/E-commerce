@@ -10,8 +10,8 @@ pub struct Model {
     pub customer_id: i32,
     pub product_id: i32,
     pub rating: i32,
-    pub review_text: Option<String>,
-    pub review_date: Option<DateTime>,
+    pub review_text: String,
+    pub review_date: DateTime,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
