@@ -3,16 +3,37 @@ body{
 	margin: 0;
 	padding: 0;
 }
+ /* NAVBAR STYLING */
+
+.nav{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
 .navbar{
-	background-color: red;
-	padding: 0.5%;
-	border: 1px solid black;
-	text-align: center;
-	
+	display: flex;
+	color: red;
+	background-color: teal;
+	justify-content: center;
+	align-items: center;
+	padding: 0 14px;
+}
+
+.nav-links {
+	list-style-type: none;
+	display: flex;
+	gap: 30px;
+}
+.navbar-list a {
+	font-weight: 700;
+	font-size: 26px;
+	text-decoration: none;
+	transition: .4s ease-in-out;
+}
+.navbar-list a:hover {
+	color: white;
 }
 .navbar-list{
-	list-style-type: none;
-	display: inline-flex;
-	padding: 1em;
-	border: 1px solid black;
+	display: flex;
+	padding: 14px;
 }
