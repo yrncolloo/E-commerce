@@ -1,4 +1,7 @@
-use frontend::App;
-fn main() {
-    yew::Renderer::<App>::new().render();
+use frontend::launch_client;
+
+
+#[tokio::main]
+async fn main() {
+    launch_client().await;
 }

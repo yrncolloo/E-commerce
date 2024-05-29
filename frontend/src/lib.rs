@@ -1,24 +1,9 @@
-mod components;
-mod router;
-use yew::{function_component, html, Html};
-use yew_router::{ BrowserRouter, Switch};
+mod routes;
 
-use components::navbar::Navbar;
-use router::{Route, switch};
+use routes::create_routes;
 
-
-#[function_component]
-pub fn App() -> Html{
-
-    html!{
-        <>
-            //<h1> {"Ecommerce website wasm"}</h1>
-            //<h1> {"I will be back in 10 minutes"}</h1>
-            <Navbar/>
-            <BrowserRouter>
-                <Switch<Route> render={switch} />
-                
-            </BrowserRouter>
-        </>
-    }
+pub async fn launch_client(){
+    let app = create_routes();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:8081").await.unwrap();
+    axum::serve(listener, app).await.unwrap()
 }
