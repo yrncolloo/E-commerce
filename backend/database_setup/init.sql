@@ -37,7 +37,6 @@ create table product (
 
 create table address (
 	id int generated always as identity primary key,
-	type varchar(50) not null,
 	country varchar(50) not null,
 	state varchar(50) not null,
 	town varchar(50) not null,
@@ -101,8 +100,8 @@ create table product_review (
 	customer_id int not null,
 	product_id int not null,
 	rating int not null,
-	review_text varchar(1000),
-	review_date timestamp without time zone default current_timestamp,
+	review_text varchar(1000) not null,
+	review_date timestamp without time zone default current_timestamp not null,
 	foreign key (customer_id) references customer (id),
 	foreign key (product_id) references product (id)
 );
