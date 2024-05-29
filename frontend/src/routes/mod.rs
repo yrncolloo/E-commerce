@@ -1,9 +1,12 @@
 pub mod home;
+pub mod about;
+pub mod products;
+pub mod review;
 
 use askama::Template;
 use axum::{http::StatusCode, response::{Html, IntoResponse, Response}, routing::get, Router};
 
-use self::home::home_page;
+use self::{about::about_page, home::home_page, products::product_page, review::review_page};
 
 
 
@@ -12,6 +15,9 @@ pub fn create_routes() -> Router{
     
     Router::new()
         .route("/", get(home_page))
+        .route("/about", get(about_page))
+        .route("/products", get(product_page))
+        .route("/review", get(review_page))
 }
 
 
