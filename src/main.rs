@@ -1,5 +1,5 @@
 use axum::http::StatusCode;
-use backend::{launch, utils::{app_error::AppError, app_state::{AppState, TokenWrapper, Wrapper}}};
+use ecommerce::{launch, utils::{app_error::AppError, app_state::{AppState, TokenWrapper, Wrapper}}};
 use dotenvy_macro::dotenv;
 use sea_orm::Database;
 
