@@ -1,0 +1,4 @@
+PORT="3000"
+BASE_ADDRESS="0.0.0.0"
+DATABASE_URL=postgresql://postgres:password@localhost:5432/e_commerce
+JWT_SECRET="NEW_SECRET"
