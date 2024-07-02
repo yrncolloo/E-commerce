@@ -8,7 +8,7 @@ use crate::{database::product::Entity as Product, utils::app_error::AppError};
 pub struct Items{
     name: String,
     description: String,
-    image_id: Option<String>,
+    image_id: String,
     price: Decimal,
     stock: i32
 
@@ -27,11 +27,11 @@ pub async fn list_one_item(
         })?;
     if let Some(item) = item{
         return Ok(Json(Items {
-            name: item.name, 
+            name: item.product_name, 
             description: item.description, 
-            image_id: item.image_id, 
+            image_id: item.image_name, 
             price: item.price, 
-            stock: item.stock }));
+            stock: item.quantity }));
     }else {
         
         Err(AppError::new(StatusCode::NOT_FOUND, "product not found"))
@@ -53,11 +53,11 @@ pub async fn list_all_items(
         })?
     .into_iter()
     .map(|db_item| Items{
-        name: db_item.name,
+        name: db_item.product_name,
         description: db_item.description,
-        image_id: db_item.image_id,
+        image_id: db_item.image_name,
         price: db_item.price,
-        stock: db_item.stock
+        stock: db_item.quantity
     })
     .collect();
 
