@@ -1,23 +1,38 @@
 pub mod handlers;
 pub mod contact;
+pub mod shop;
 
 use askama::Template;
-use axum::{response::{Html, IntoResponse, Response}, routing::{get, post}, Router};
+use axum::{extract::{Request, State}, middleware::{self, Next}, response::{Html, IntoResponse, Response}, routing::{get, post}, Router};
 use hyper::StatusCode;
+use reqwest::Client;
 
-use self::{contact::contact_us, handlers::{cart, checkout, contact, detail, home, shop}};
+use crate::utils::{app_error::AppError, app_state::AppState, custom_frontend_middleware::{self, frontend_guard}, custom_middleware::guard_routes};
+
+use self::{contact::contact_us, handlers::{cart, checkout, contact, detail, home}, shop::shop};
+
+use super::backend::RespondUser;
 
 
-pub fn frontend_routes() -> Router{
-    
+pub fn frontend_routes(app_state: AppState) -> Router{
+    let client = Client::new();
+
     Router::new()
-        .route("/", get(home))
         .route("/contact", get(contact))
         .route("/contact", post(contact_us))
         .route("/detail", get(detail))
         .route("/checkout", get(checkout))
         .route("/shop", get(shop))
         .route("/cart", get(cart))
+        .route_layer(middleware::from_fn_with_state(app_state.clone(), frontend_guard))
+        .route("/", get(home))
+        .layer(
+            middleware::from_fn(inject_token)
+            )
+        //.route_layer(middleware::from_fn_with_state(app_state.clone(), frontend_guard))
+        .with_state(client)
+        .with_state(app_state)
+        
 }
 
 
@@ -44,4 +59,15 @@ impl<T> IntoResponse for HtmlTemplate<T>
 }
 
 
+async fn inject_token(
+   mut req: Request,
+    next: Next
+    ) -> Result<Response, AppError>{
+
+    let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MjA1MjUwNDAsImlhdCI6MTcyMDUyNDQ0MH0.P-k6mtl0XERRBLE7-WX6dxH2AFAIdXLNnoz47F-vlTU".to_string();
+    let tkn = format!("Bearer {}", token).parse().unwrap();
+   req.headers_mut().insert("Authorization", tkn);
+
+    Ok(next.run(req).await)
+}
 

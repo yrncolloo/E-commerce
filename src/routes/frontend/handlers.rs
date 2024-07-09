@@ -45,15 +45,7 @@ pub async fn checkout() -> impl IntoResponse{
 
 }
 
-#[derive(Template)]
-#[template(path="shop.html")]
-pub struct ShopTemplate{}
 
-pub async fn shop() -> impl IntoResponse{
-    let temp = ShopTemplate{};
-    HtmlTemplate(temp)
-
-}
 
 #[derive(Template)]
 #[template(path="cart.html")]
