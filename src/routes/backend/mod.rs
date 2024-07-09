@@ -33,5 +33,5 @@ pub struct RespondUser{
     username: String,
     telephone: String,
     email: String,
-    token: Option<String>
+    pub token: Option<String>
 }

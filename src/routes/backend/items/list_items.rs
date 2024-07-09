@@ -6,11 +6,12 @@ use crate::{database::product::Entity as Product, utils::app_error::AppError};
 
 #[derive(Serialize)]
 pub struct Items{
-    name: String,
+    product_name: String,
     description: String,
-    image_id: String,
+    image_name: String,
     price: Decimal,
-    stock: i32
+    quantity: i32,
+    date_added: String,
 
 }
 pub async fn list_one_item(
@@ -27,11 +28,13 @@ pub async fn list_one_item(
         })?;
     if let Some(item) = item{
         return Ok(Json(Items {
-            name: item.product_name, 
+            product_name: item.product_name, 
             description: item.description, 
-            image_id: item.image_name, 
+            image_name: item.image_name, 
             price: item.price, 
-            stock: item.quantity }));
+            quantity: item.quantity,
+            date_added: item.date_added.to_string()
+        }));
     }else {
         
         Err(AppError::new(StatusCode::NOT_FOUND, "product not found"))
@@ -53,11 +56,12 @@ pub async fn list_all_items(
         })?
     .into_iter()
     .map(|db_item| Items{
-        name: db_item.product_name,
+        product_name: db_item.product_name,
         description: db_item.description,
-        image_id: db_item.image_name,
+        image_name: db_item.image_name,
         price: db_item.price,
-        stock: db_item.quantity
+        quantity: db_item.quantity,
+        date_added: db_item.date_added.to_string()
     })
     .collect();
 
