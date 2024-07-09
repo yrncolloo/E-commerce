@@ -1,48 +1,35 @@
-drop table if exists status_update cascade;
-drop table if exists sale_and_product cascade;
-drop table if exists sale cascade;
-drop table if exists customer_and_addres cascades;
-drop table if exists customer cascade;
-drop table if exists address cascade;
-drop table if exists product cascade;
-drop table if exists subcategory cascade;
-drop table if exists category cascade;
-drop table if exists product_review cascade;
--- Deallocate all prepared statements
-deallocate all;
-
-create table category (
-	id int generated always as identity primary key,
-	name varchar(50) unique not null,
-	logo varchar(50)
+CREATE TABLE categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE
 );
 
-create table subcategory (
-	id int generated always as identity primary key,
-	category_id int not null,
-	name varchar(50) unique not null,
-	foreign key (category_id) references category (id)
+CREATE TABLE product (
+    id SERIAL PRIMARY KEY,
+    product_name VARCHAR(255) NOT NULL UNIQUE,
+    price DECIMAL(10, 2) NOT NULL,
+    star INTEGER CHECK (star >= 0 AND star <= 5),
+    image_name VARCHAR(255) NOT NULL,
+    date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    category_id INTEGER NOT NULL,
+    description TEXT NOT NULL,
+    quantity INTEGER NOT NULL CHECK (quantity >= 0),
+    FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
-create table product (
-	id int generated always as identity primary key,
-	name varchar(100) not null,
-	description varchar(5000) not null,
-	image_id varchar(36),
-	price numeric(20, 4) not null,
-	stock int not null,
-	subcategory_id int not null,
-	foreign key (subcategory_id) references subcategory (id)
+CREATE TABLE colors (
+    id SERIAL PRIMARY KEY,
+    product_id INTEGER NOT NULL,
+    color VARCHAR(50) NOT NULL,
+    quantity INTEGER NOT NULL CHECK (quantity >= 0),
+    FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
 );
 
-create table address (
-	id int generated always as identity primary key,
-	country varchar(50) not null,
-	state varchar(50) not null,
-	town varchar(50) not null,
-	zip varchar(20) not null,
-	address_line_1 varchar(100) not null,
-	address_line_2 varchar(100)
+CREATE TABLE sizes (
+    id SERIAL PRIMARY KEY,
+    product_id INTEGER NOT NULL,
+    size VARCHAR(50) NOT NULL,
+    quantity INTEGER NOT NULL CHECK (quantity >= 0),
+    FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
 );
 
 create table customer (
@@ -55,45 +42,19 @@ create table customer (
 	default_address_id int unique,
 	salt varchar(64) unique not null,
 	password_hash varchar(64) not null,
-	token text default null,
-	foreign key (default_address_id) references address (id)
+	token text default null
 );
 
-create table customer_and_address (
+create table address (
 	id int generated always as identity primary key,
-	customer_id int not null,
-	address_id int not null,
-	foreign key (customer_id) references customer (id),
-	foreign key (address_id) references address (id)
+	country varchar(50) not null,
+	state varchar(50) not null,
+	town varchar(50) not null,
+	zip varchar(20) not null,
+	address_line_1 varchar(100) not null,
+	address_line_2 varchar(100)
 );
 
-create table sale (
-	id int generated always as identity primary key,
-	ordered_at timestamp without time zone not null,
-	shipping_status varchar(30) default 'Not sent' not null,
-	customer_id int not null,
-	address_id int not null,
-	is_paid boolean default false not null,
-	foreign key (customer_id) references customer (id),
-	foreign key (address_id) references address (id)
-);
-
-create table sale_and_product (
-	id int generated always as identity primary key,
-	sale_id int not null,
-	product_id int not null,
-	amount int not null,
-	price_per_piece decimal(20, 4) not null,
-	foreign key (sale_id) references sale (id),
-	foreign key (product_id) references product (id)
-);
-
-create table status_update (
-	id int generated always as identity primary key,
-	sale_id int not null,
-	status_change varchar(500) not null,
-	foreign key (sale_id) references sale (id)
-);
 
 create table product_review (
 	id int generated always as identity primary key,
@@ -101,8 +62,5 @@ create table product_review (
 	product_id int not null,
 	rating int not null,
 	review_text varchar(1000) not null,
-	review_date timestamp without time zone default current_timestamp not null,
-	foreign key (customer_id) references customer (id),
-	foreign key (product_id) references product (id)
+	review_date timestamp without time zone default current_timestamp not null
 );
-
