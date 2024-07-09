@@ -9,7 +9,8 @@ use sea_orm::Set;
 
 use crate::utils::app_error::AppError;
 use crate::database::product as ProductDB;
-use crate::database::categories::{self as CategoryDB, ActiveModel, Model};
+use crate::database::categories::{self as CategoryDB, Model};
+use crate::database::colors as ColorDB;
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct GetProducts{
@@ -18,7 +19,9 @@ pub struct GetProducts{
     image_name: String,
     total_quantity: i32,
     category: String,
-    description: String
+    description: String,
+    color: String,
+    quantity_per_color: i32
 }
 
 
@@ -109,8 +112,14 @@ async fn finish_building(database: DatabaseConnection,
     }.save(&database)
     .await
         .map_err(|error|{
-            eprintln!("Error saving the product {}", error);
-            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "something went wrong")
+                let error_mess = error.to_string();
+
+                if error_mess.contains("duplicate key value violates unique constraint"){
+                    eprintln!("Product already exist");
+                    return AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Product already exist");
+                }
+                eprintln!("Error saving the product {}", error);
+                AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "something went wrong")
         })?;
 
     let final_product = product.try_into_model()
@@ -118,6 +127,25 @@ async fn finish_building(database: DatabaseConnection,
             eprintln!("Error converting product into model{}", error);
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "something went wrong")
         })?;
+
+    let color = ColorDB::ActiveModel{
+        color: Set(raw_products.color),
+        quantity: Set(raw_products.quantity_per_color),
+        product_id: Set(final_product.id),
+        ..Default::default()
+    }.save(&database)
+    .await
+    .map_err(|error|{
+        eprintln!("Error saving color: {}", error);
+        AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "something went wrong")
+    })?;
+    let color = color.try_into_model()
+        .map_err(|error|{
+            eprintln!("Error converting product into model{}", error);
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "something went wrong")
+        })?;
+
+
     Ok(Json(ProductsResponse { 
         product_name: final_product.product_name,
         price: final_product.price.to_string(),
@@ -125,8 +153,8 @@ async fn finish_building(database: DatabaseConnection,
         date_added: final_product.date_added.to_string(),
         total_quantity: final_product.quantity.to_string(),
         category: category_db_id.name,
-        color: "to be checked".to_string(),
-        color_quantity: "to be checked".to_string(),
+        color: color.color,
+        color_quantity: color.quantity.to_string(),
         size: "to be checked".to_string(),
         size_quantity: "to be checked".to_string()
     }
